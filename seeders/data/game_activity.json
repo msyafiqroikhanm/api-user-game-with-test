@@ -1,0 +1,17 @@
+[
+    {
+        "name":"Login"
+    },
+    {
+        "name":"Logout"
+    },
+    {
+        "name":"Play Game"
+    },
+    {
+        "name":"Change Bio"
+    },
+    {
+        "name":"Change Password"
+    }
+]
