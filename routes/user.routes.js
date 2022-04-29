@@ -27,7 +27,7 @@ router.put(
           if (!valid) {
             next({
               status: 401,
-              message: "Cannot Change Data. Unauthorized",
+              message: "Unauthorized Request",
             });
           } else {
             next();
@@ -36,7 +36,7 @@ router.put(
         .catch((err) => {
           throw {
             status: 401,
-            message: "Unauthorized",
+            message: "Unauthorized Request",
             err,
           };
         });

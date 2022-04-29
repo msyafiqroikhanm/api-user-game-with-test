@@ -1,58 +1,53 @@
 const request = require("supertest");
 const app = require("../app");
+const jwt = require("jsonwebtoken");
 
-describe("Authentication Test", () => {
+let token = jwt.sign({ id: 1, username: "raptotor" }, "indonesiaraya", {
+  expiresIn: "1h",
+});
+
+describe("History Test", () => {
   it("Success", (done) => {
     request(app)
-      .post("/login")
-      .send({
-        username: "raptotor",
-        password: "terlatihpatahhati",
-      })
+      .get("/histories")
+      .set("authorization", token)
       .end((err, res) => {
         if (err) {
           done(err);
         } else {
           expect(res.status).toBe(200);
-          expect(res.body).toHaveProperty("accessToken");
+          expect(Array.isArray(res.body)).toBe(true);
           done();
         }
       });
   });
 
-  it("Error: Wrong Username", (done) => {
+  it("Error: No Authorization Token", (done) => {
     request(app)
-      .post("/login")
-      .send({
-        username: "rapthor98",
-        password: "terlatihpatahhati",
-      })
+      .get("/histories")
       .end((err, res) => {
         if (err) {
           done(err);
         } else {
           expect(res.status).toBe(401);
           expect(res.body).toHaveProperty("message");
-          expect(res.body.message).toBe("Invalid Username Or Password");
+          expect(res.body.message).toBe("Unauthorized Request");
           done();
         }
       });
   });
 
-  it("Error: Wrong Password", (done) => {
+  it("Error: Invalid Authorization Token", (done) => {
     request(app)
-      .post("/login")
-      .send({
-        username: "raptotor",
-        password: "sakithati",
-      })
+      .get("/histories")
+      .set("authorization", "token")
       .end((err, res) => {
         if (err) {
           done(err);
         } else {
           expect(res.status).toBe(401);
           expect(res.body).toHaveProperty("message");
-          expect(res.body.message).toBe("Invalid Username Or Password");
+          expect(res.body.message).toBe("Unauthorized Request");
           done();
         }
       });
