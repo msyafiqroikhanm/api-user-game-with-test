@@ -1,5 +1,52 @@
+const bcrypt = require("bcryptjs");
 const request = require("supertest");
+const { sequelize } = require("../models");
+const { queryInterface } = sequelize;
 const app = require("../app");
+const fs = require("fs");
+
+beforeEach(async () => {
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync("terlatihpatahhati", salt);
+  const data1 = JSON.parse(
+    fs.readFileSync("./seeders/data/user_game_biodata.json")
+  );
+  const userGameBiodata = data1.map((element) => {
+    return {
+      nickname: element.nickname,
+      email: element.email,
+      mobile_no: element.mobile_no,
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+  });
+  await queryInterface.bulkInsert("user_game_biodata", userGameBiodata);
+
+  const data = JSON.parse(
+    fs.readFileSync("./seeders/data/user_games.json", "utf-8")
+  );
+  const userGame = data.map((element) => {
+    return {
+      user_game_biodata_id: element.userGameBiodataId,
+      username: element.username,
+      password: bcrypt.hashSync(element.password),
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+  });
+  await queryInterface.bulkInsert("user_games", userGame);
+});
+
+afterEach(async () => {
+  await queryInterface.bulkDelete("user_games", null, {
+    truncate: true,
+    restartIdentity: true,
+  });
+  await queryInterface.bulkDelete("user_game_biodata", null, {
+    truncate: true,
+    restartIdentity: true,
+  });
+});
 
 describe("Authentication Test", () => {
   it("Success", (done) => {
