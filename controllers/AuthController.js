@@ -13,7 +13,7 @@ class AuthController {
                     }
     } */
     /* #swagger.responses[401] = {
-            description: 'Error: Unauthorized',
+            description: 'Error: Unauthorized Request',
             schema: {
                         "message": "Invalid Username Or Password",
                     }
@@ -52,7 +52,7 @@ class AuthController {
           id: user.id,
           username: user.username,
         },
-        "secret",
+        "indonesiaraya",
         { expiresIn: 86400 }
       );
       res
@@ -65,9 +65,15 @@ class AuthController {
 
   static async authorization(req, res, next) {
     /* #swagger.responses[401] = {
-            description: 'Error: Unauthorized',
+            description: 'Error: Unauthorized Request',
             schema: {
-                        "message": "Unauthorized : Your Token is Invalid",
+                        "message": "Unauthorized Request",
+                    }
+    } */
+    /* #swagger.responses[401] = {
+            description: 'Error: Unauthorized Request',
+            schema: {
+                        "message": "Unauthorized Request",
                     }
     } */
 
@@ -75,20 +81,24 @@ class AuthController {
       if (!req.headers.authorization) {
         throw {
           status: 401,
-          message: "Unauthorized",
+          message: "Unauthorized Request",
         };
       }
-      jwt.verify(req.headers.authorization, "secret", function (err, decoded) {
-        if (err) {
-          throw {
-            status: 401,
-            message: "Unauthorized : Your Token is Invalid",
-            err,
-          };
+      jwt.verify(
+        req.headers.authorization,
+        "indonesiaraya",
+        function (err, decoded) {
+          if (err) {
+            throw {
+              status: 401,
+              message: "Unauthorized Request",
+              err,
+            };
+          }
+          req.user = decoded;
+          next();
         }
-        req.user = decoded;
-        next();
-      });
+      );
     } catch (error) {
       next(error);
     }

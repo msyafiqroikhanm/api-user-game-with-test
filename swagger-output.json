@@ -56,7 +56,7 @@
             }
           },
           "401": {
-            "description": "Error: Unauthorized",
+            "description": "Error: Unauthorized Request",
             "schema": {
               "type": "object",
               "properties": {
@@ -144,13 +144,13 @@
             }
           },
           "401": {
-            "description": "Error: Unauthorized",
+            "description": "Error: Unauthorized Request",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Unauthorized : Your Token is Invalid"
+                  "example": "Unauthorized Request"
                 }
               },
               "xml": {
@@ -233,13 +233,13 @@
             }
           },
           "401": {
-            "description": "Error: Unauthorized",
+            "description": "Error: Unauthorized Request",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Unauthorized : Your Token is Invalid"
+                  "example": "Unauthorized Request"
                 }
               },
               "xml": {
@@ -373,13 +373,13 @@
             }
           },
           "401": {
-            "description": "Error: Unauthorized",
+            "description": "Error: Unauthorized Request",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Unauthorized : Your Token is Invalid"
+                  "example": "Unauthorized Request"
                 }
               },
               "xml": {
@@ -467,13 +467,13 @@
             }
           },
           "401": {
-            "description": "Error: Unauthorized",
+            "description": "Error: Unauthorized Request",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Unauthorized : Your Token is Invalid"
+                  "example": "Unauthorized Request"
                 }
               },
               "xml": {
@@ -570,13 +570,13 @@
             }
           },
           "401": {
-            "description": "Error: Unauthorized",
+            "description": "Error: Unauthorized Request",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Unauthorized : Your Token is Invalid"
+                  "example": "Unauthorized Request"
                 }
               },
               "xml": {
@@ -652,13 +652,13 @@
             }
           },
           "401": {
-            "description": "Error: Unauthorized",
+            "description": "Error: Unauthorized Request",
             "schema": {
               "type": "object",
               "properties": {
                 "message": {
                   "type": "string",
-                  "example": "Unauthorized : Your Token is Invalid"
+                  "example": "Unauthorized Request"
                 }
               },
               "xml": {
