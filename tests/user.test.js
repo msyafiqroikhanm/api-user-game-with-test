@@ -376,3 +376,130 @@ describe("DELETE User Test", () => {
       });
   });
 });
+
+describe("PUT User Test", () => {
+  it("Success", (done) => {
+    request(app)
+      .put("/users/1")
+      .set("authorization", token)
+      .send({
+        nickname: "thorq",
+        email: "thorq@mail.com",
+        mobile_no: "081212341234",
+      })
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(200);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toBe("User Has Been Updated!");
+          done();
+        }
+      });
+  });
+
+  it("Error: User Not Found", (done) => {
+    request(app)
+      .put("/users/10")
+      .set("authorization", token)
+      .send({
+        nickname: "thorq",
+        email: "thorq@mail.com",
+        mobile_no: "081212341234",
+      })
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(404);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toBe("User Not Found!");
+          done();
+        }
+      });
+  });
+
+  it("Error: Invalid User", (done) => {
+    request(app)
+      .put("/users/2")
+      .set("authorization", token)
+      .send({
+        nickname: "thorq",
+        email: "thorq@mail.com",
+        mobile_no: "081212341234",
+      })
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(401);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toBe("Unauthorized Request");
+          done();
+        }
+      });
+  });
+
+  // it("Error: User Not Found", (done) => {
+  //   request(app)
+  //     .put("/users/10")
+  //     .set("authorization", token)
+  //     .send({
+  //       nickname: "thorq",
+  //       email: "thorq@mail.com",
+  //       mobile_no: "081212341234",
+  //     })
+  //     .end((err, res) => {
+  //       if (err) {
+  //         done(err);
+  //       } else {
+  //         expect(res.status).toBe(404);
+  //         expect(res.body).toHaveProperty("message");
+  //         expect(res.body.message).toBe("User Not Found!");
+  //         done();
+  //       }
+  //     });
+  // });
+
+  it("Error: Invalid Authorization Token", (done) => {
+    request(app)
+      .put("/users/1")
+      .set("authorization", "token")
+      .send({
+        nickname: "thorq",
+        email: "thorq@mail.com",
+        mobile_no: "081212341234",
+      })
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(401);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toBe("Unauthorized Request");
+          done();
+        }
+      });
+  });
+
+  it("Error: No Authorization Token", (done) => {
+    request(app)
+      .put("/users/1")
+      .send({
+        nickname: "thorq",
+        email: "thorq@mail.com",
+        mobile_no: "081212341234",
+      })
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(401);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toBe("Unauthorized Request");
+          done();
+        }
+      });
+  });
+});
