@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const GameController = require("../controllers/GameController.js");
 const { body, check } = require("express-validator");
-const { user_game } = require("../models");
+const { findUserById } = require("../services/userGame.services");
 
 router.get("/", GameController.getUsers);
 router.post(
@@ -18,28 +18,29 @@ router.post(
 router.get("/:id", GameController.getUserById);
 router.put(
   "/:id",
-  (req, res, next) => {
+  async (req, res, next) => {
     try {
-      user_game
-        .findOne({ where: { id: req.user.id } })
-        .then((user) => {
-          let valid = Number(req.params.id) === req.user.id;
-          if (!valid) {
-            next({
-              status: 401,
-              message: "Unauthorized Request",
-            });
-          } else {
-            next();
-          }
-        })
-        .catch((err) => {
-          throw {
+      const user = await findUserById(Number(req.params.id), [
+        "id",
+        "user_game_biodata_id",
+      ]);
+
+      if (!user) {
+        throw {
+          status: 404,
+          message: "User Not Found!",
+        };
+      } else {
+        let valid = Number(req.params.id) === req.user.id;
+        if (!valid) {
+          next({
             status: 401,
             message: "Unauthorized Request",
-            err,
-          };
-        });
+          });
+        } else {
+          next();
+        }
+      }
     } catch (error) {
       next(error);
     }
