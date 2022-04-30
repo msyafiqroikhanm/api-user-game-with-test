@@ -67,7 +67,7 @@ class GameController {
     /* #swagger.responses[400] = {
             description: 'Error: Bad Request',
             schema: {
-                      "message": "Bad Request : email or username is exist"
+                      "message": "Bad Request
                     }
     } */
     /* #swagger.responses[500] = {
@@ -113,7 +113,7 @@ class GameController {
       if (isExist.email && isExist.username) {
         throw {
           status: 400,
-          message: "Bad Request : email or username is exist",
+          message: "Bad Request",
         };
       } else {
         let mobile = req.body.mobile_no ? req.body.mobile_no : null;

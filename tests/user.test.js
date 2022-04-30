@@ -194,6 +194,78 @@ describe("POST Users Test", () => {
       });
   });
 
+  it("Error: Bad Request (Invalid mobile_no)", (done) => {
+    request(app)
+      .post("/users")
+      .set("authorization", token)
+      .send({
+        email: "roikhan@mail.com",
+        username: "roikhan",
+        mobile_no: "981281238907",
+        password: "roikhan",
+        nickname: "myroikh",
+      })
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(400);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toHaveProperty("errors");
+          expect(Array.isArray(res.body.message.errors)).toBe(true);
+          expect(res.body.message.errors.length).toBe(1);
+          done();
+        }
+      });
+  });
+
+  it("Error: Bad Request (Invalid mobile_no & No email)", (done) => {
+    request(app)
+      .post("/users")
+      .set("authorization", token)
+      .send({
+        username: "roikhan",
+        mobile_no: "981281238907",
+        password: "roikhan",
+        nickname: "myroikh",
+      })
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(400);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toHaveProperty("errors");
+          expect(Array.isArray(res.body.message.errors)).toBe(true);
+          expect(res.body.message.errors.length).toBe(2);
+          done();
+        }
+      });
+  });
+
+  it("Error: Bad Request (email or username is exist)", (done) => {
+    request(app)
+      .post("/users")
+      .set("authorization", token)
+      .send({
+        email: "palingberguna@mail.com",
+        username: "botcat",
+        mobile_no: "081281238907",
+        password: "roikhan",
+        nickname: "myroikh",
+      })
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(400);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toBe("Bad Request");
+          done();
+        }
+      });
+  });
+
   it("Error: No Authorization Token", (done) => {
     request(app)
       .post("/users")
@@ -227,6 +299,71 @@ describe("POST Users Test", () => {
         password: "roikhan",
         nickname: "myroikh",
       })
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(401);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toBe("Unauthorized Request");
+          done();
+        }
+      });
+  });
+});
+
+describe("DELETE User Test", () => {
+  it("Success", (done) => {
+    request(app)
+      .delete("/users/1")
+      .set("authorization", token)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(200);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toBe("User Has Been Deleted");
+          done();
+        }
+      });
+  });
+
+  it("Error: Not Found", (done) => {
+    request(app)
+      .delete("/users/10")
+      .set("authorization", token)
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(404);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toBe("User Not Found!");
+          done();
+        }
+      });
+  });
+
+  it("Error: No Authorization Token", (done) => {
+    request(app)
+      .delete("/users/1")
+      .end((err, res) => {
+        if (err) {
+          done(err);
+        } else {
+          expect(res.status).toBe(401);
+          expect(res.body).toHaveProperty("message");
+          expect(res.body.message).toBe("Unauthorized Request");
+          done();
+        }
+      });
+  });
+
+  it("Error: Invalid Authorization Token", (done) => {
+    request(app)
+      .delete("/users/1")
+      .set("authorization", "token")
       .end((err, res) => {
         if (err) {
           done(err);
